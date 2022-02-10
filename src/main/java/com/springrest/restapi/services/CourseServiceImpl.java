@@ -1,6 +1,8 @@
 package com.springrest.restapi.services;
 
+import com.springrest.restapi.dao.CourseDao;
 import com.springrest.restapi.entities.Course;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -9,35 +11,44 @@ import java.util.List;
 @Service
 public class CourseServiceImpl implements CourseService{
 
-    List<Course> list;
+    @Autowired
+    private CourseDao courseDao;
+//    List<Course> list;
 
     public CourseServiceImpl(){
-        list = new ArrayList<>();
-        list.add(new Course(1L,"English","New English"));
-        list.add(new Course(2L,"Urdu","New Urdu"));
-        list.add(new Course(3L,"Science","New Book Science"));
+//        list = new ArrayList<>();
+//        list.add(new Course(1L,"English","New English"));
+//        list.add(new Course(2L,"Urdu","New Urdu"));
+//        list.add(new Course(3L,"Science","New Book Science"));
     }
 
     @Override
     public List<Course> getCourses() {
-        return list;
+        return  courseDao.findAll();
     }
 
     @Override
     public  Course getCourse(Long courseId){
-        Course c = null;
-        for(Course course:list){
-            if(course.getId() == courseId) {
-                c = course;
-                break;
-            }
-        }
-        return c;
+        System.out.println(courseDao.getById(courseId));
+        return (Course) courseDao.findById(courseId).get();
+
     }
 
     @Override
     public Course addCourse(Course course){
-        this.list.add(course);
-        return course;
+       courseDao.save(course);
+       return  course;
+    }
+
+    @Override
+    public Course updateCourse(Course course){
+      courseDao.save(course);
+      return  course;
+    }
+
+    @Override
+    public void deleteCourse(Long courseId){
+        Course course = courseDao.getById(courseId);
+        courseDao.delete(course);
     }
 }

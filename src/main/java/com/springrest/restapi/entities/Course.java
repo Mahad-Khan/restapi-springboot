@@ -1,9 +1,16 @@
 package com.springrest.restapi.entities;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+
+@Entity
 public class Course {
+    @Id
     private Long id;
     private String title;
     private  String description;
+
+    public  Course(){}
 
     public Course(Long id, String title, String description) {
         this.id = id;

@@ -4,6 +4,8 @@ import com.springrest.restapi.entities.Course;
 import com.springrest.restapi.services.CourseService;
 import com.springrest.restapi.services.CourseServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,14 +24,13 @@ public class MyController {
     //get the list of courses
     @GetMapping("/courses")
     public List<Course>  getCourses(){
-        // have to call services
+
         return this.courseService.getCourses();
     }
 
     //get a course
     @GetMapping("/courses/{courseId}")
     public Course  getCourse(@PathVariable String courseId){
-        // have to call services
         return this.courseService.getCourse(Long.parseLong(courseId));
     }
 
@@ -37,5 +38,21 @@ public class MyController {
     public Course addCourse(@RequestBody Course course){
         return this.courseService.addCourse(course);
 
+    }
+
+    @PutMapping("/courses")
+    public Course updateCourse(@RequestBody Course course){
+        return this.courseService.updateCourse(course);
+    }
+
+    @DeleteMapping("/courses/{courseId}")
+    public ResponseEntity<HttpStatus> deleteCourse(@PathVariable String courseId) {
+        try {
+            this.courseService.deleteCourse(Long.parseLong(courseId));
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+        catch (Exception e){
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 }
