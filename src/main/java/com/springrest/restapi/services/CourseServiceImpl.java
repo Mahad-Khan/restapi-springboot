@@ -29,9 +29,7 @@ public class CourseServiceImpl implements CourseService{
 
     @Override
     public  Course getCourse(Long courseId){
-        System.out.println(courseDao.getById(courseId));
         return (Course) courseDao.findById(courseId).get();
-
     }
 
     @Override
